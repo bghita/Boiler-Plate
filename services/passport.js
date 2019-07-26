@@ -1,6 +1,6 @@
 const passport = require('passport');
-const User = require('./../../models/User');
-const config = require('./../config');
+const User = require('../models/User');
+const config = require('../config');
 const JwStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy= require('passport-local');
@@ -10,6 +10,7 @@ const LocalStrategy= require('passport-local');
 const localOptions = { usernameField: 'email' };
 
 const localLogin = new LocalStrategy(localOptions, async (email, password, done) => {
+
     try {
         const user = await User.findOne({email});
         if(!user) {
@@ -22,6 +23,7 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
             }
             return done(null, user);
         });
+        
     } catch(e) {
         done(e, false);
     }

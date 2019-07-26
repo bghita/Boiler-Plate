@@ -1,14 +1,12 @@
 const router = require('express').Router();
-
 const authControllers = require('./../../controllers/authControllers');
+const authMiddleware = require('./../../middlewares/authMiddlewares');
+const passportService = require('./../../services/passport')
 
 router.route('/signup')
-    .post((req, res) => {
-        console.log("i'm Hit!!!");
-        res.send('success')
-    });
+    .post(authControllers.signUp);
 
 router.route('/signin')
-    .post(authControllers.sighnIn);
+    .post(authMiddleware.requireSignIn, authControllers.signIn);
 
 module.exports = router;
