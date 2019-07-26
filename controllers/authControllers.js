@@ -19,5 +19,8 @@ module.exports = {
         } catch(e) {
             res.status(404).json({ e });
         }
+    },
+    sighnIn: (req, res) => {
+        res.send('Im Hit!!!!');
     }
 };

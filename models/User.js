@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 const validator = require('validator');
 
@@ -23,6 +24,29 @@ const UserSchema = new Schema({
     }
 });
 
+UserSchema.pre('save', async function(next){
+    const user = this;
+    try {
+        const salt = await bcrypt.genSalt();
+        console.log('salt', salt);
+        const hash = await bcrypt.hash(user.password, salt);
+        console.log('hash', hash);
+        user.password = hash;
+        next();
+    } catch(e){
+        return next(e);
+    }
+});
+
+UserSchema.methods.comparePassword = async function(canidatePassword, callback){
+    const user= this;
+    try {
+        const isMatch = await bcrypt.compare(canidatePassword, user.password);
+        callback(null, isMatch);
+    } catch(e) {
+        callback(e);
+    }
+}
 
 const User = mongoose.model('User', UserSchema);
 

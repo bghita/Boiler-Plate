@@ -8,4 +8,7 @@ router.route('/signup')
         res.send('success')
     });
 
+router.route('/signin')
+    .post(authControllers.sighnIn);
+
 module.exports = router;
